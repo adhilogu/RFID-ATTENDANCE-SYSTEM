@@ -9,14 +9,13 @@ required_modules = [
     "time","tkinter","random",
     "datetime",
     "pymysql",
-    "paho.mqtt",
     "tkcalendar",
     "reportlab",
     "datetime",
     "pyserial",
     "db-sqlite3"
 ]
-#"time","tkinter","random","NIGGER","NIGGERlittle",
+
 sucful=[]
 unsucful=[]
 def install_modules(modules):
