@@ -4,53 +4,45 @@ import time
 from datetime import date
 import pymysql
 from tkinter import *
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, ttk
-import random
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage,ttk
 from tkinter import ttk
 from tkcalendar import DateEntry
 import datetime
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-# import threading
-# import serial
+import threading
+#import serial
 
+from babel import numbers
 import sqlite3
-import csv
 from tkinter import messagebox
 from tkinter import filedialog
 
-# import keyboard
-# from pynput import keyboard
 
-
-# 1719662701
 # ser = serial.Serial('COM5', 9600)  # Update with correct port
 
 connection = sqlite3.connect('attendance_system.db')
 cursor = connection.cursor()
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"build/assets/frame0")
-
+#ASSETS_PATH = OUTPUT_PATH / Path(r"build\assets\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"/Users/adhilogu2004gmail.com/Downloads/frame1")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-
 window = Tk()
-window.title('main')
+window.title('ATTENDANCE SYSTEM')
 window.geometry("1450x950")
-window.attributes('-fullscreen', True)
-# width = window.winfo_screenwidth()
+window.attributes('-fullscreen', False)
+#width = window.winfo_screenwidth()
 
-# height = window.winfo_screenheight()
-# print(f"width = {width}, height = {height}")
-global l1, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, my_font, rows
-global scan_rfid, thread
+#height = window.winfo_screenheight()
+#print(f"width = {width}, height = {height}")
+global l1, button_1,button_2,button_3,button_4,button_5,button_6,button_7,button_8,my_font,rows
+global scan_rfid,thread
 my_font = ('times', 40, 'bold')
-
-
 def my_time():
     time_string = time.strftime('%I:%M:%S %p / %d-%m-%Y')
     l1.config(text=time_string)
@@ -60,13 +52,12 @@ def my_time():
 def login():
     # button_1.place_forget()
     # global button_1,button_2,button_3,button_4,button_5,button_6,button_7,button_8,l1
-    # global window
+    #global window
     global password_entry
-    # status1.place_forget()
-
-    name_label.place_forget()
-    name_entry.place_forget()
-    search_button.place_forget()
+    status1.place_forget()
+    #name_label.place_forget()
+    #name_entry.place_forget()
+    #search_button.place_forget()
     roll_number_label.place_forget()
     attendance_table.place_forget()
     button_2.place_forget()
@@ -78,8 +69,9 @@ def login():
     button_8.place_forget()
     l1.place_forget()
     ltime.place_forget()
+    #status1.place_forget()
 
-    # status1.place_forget()
+
 
     def check_user():
         global password_entry
@@ -108,26 +100,34 @@ def login():
                                font=("Arial", 30, 'bold'))
             down_label.place(x=329.0, y=727.0, width=809.0, height=59.0)
 
-    password_label = Label(window, text="Password:", font=("Arial", 32, 'bold'), bg="#013f95", fg='white')
+
+    password_label = Label(window, text="Password:",font=("Arial", 32,'bold'), bg="#013f95", fg='white')
     password_label.place(x=485.0, y=485.0, width=226.0, height=59.0)
-    password_entry = Entry(window, show="*", font=("Arial", 40, 'bold'), fg="#013f95", bg="white",
-                           insertbackground='red')
+    password_entry = Entry(window, show="*",font=("Arial", 40,'bold'), fg="#013f95",bg="white",insertbackground='red')
     password_entry.place(x=741.0, y=485.0, width=226.0, height=59.0)
-    user_label = Label(window, text="User:", font=("Arial", 35, 'bold'), bg="#013f95", fg='white')
+    user_label = Label(window, text="User:", font=("Arial", 35,'bold'), bg="#013f95", fg='white')
     user_label.place(x=485.0, y=391.0, width=226.0, height=59.0)
 
     # Create a dropdown for user selection
     user_var = StringVar(window)
     user_var.set("admin")  # Default selection
-    user_dropdown = OptionMenu(window, user_var, "adhi", "admin", "student")
-    user_dropdown.config(font=("Arial", 20, 'bold'), fg="#013f95", bg="white")
+    user_dropdown = OptionMenu(window, user_var, "adhi","admin", "student")
+    user_dropdown.config(font=("Arial", 20,'bold'), fg="#013f95",bg="white")
     user_dropdown.place(x=741.0, y=391.0, width=226.0, height=59.0)
 
     # Create a button to login
-    login_button = Button(window, text="Login", command=check_user, fg="#1d2f71", font=("Arial", 25, 'bold'))
+    login_button = Button(window, text="Login", command=check_user,fg="#1d2f71", font=("Arial", 25,'bold'))
     login_button.place(x=491.0, y=599.0, width=466.0, height=47.0)
     password_entry.focus_set()
+    def on_key_press(key):
+        try:
+            # Check if the key is alphanumeric
+            if key.keysym == "Return":
+                login_button.invoke()
+        except Exception as e:
+            print(e)
 
+    window.bind("<Key>", on_key_press)
     window.mainloop()
 
 
@@ -300,6 +300,10 @@ def update_panel():
             ent_label = Label(window, text="Search Not found", font=("Arial", 25, 'bold'), fg="white", bg='red')
             ent_label.place(x=490, y=610, width=500, height=60)
 
+
+
+
+
     heading_label = Label(window, text="Update Panel", font=("Arial", 50, 'bold'), fg="white", bg='#070c40')
     rfid_number_label = Label(window, text="RFID Number:", font=("Arial", 25, 'bold'), bg="#013f95", fg='white')
     roll_num_label = Label(window, text="Roll Number:", font=("Arial", 25, 'bold'), bg="#013f95", fg='white')
@@ -314,7 +318,7 @@ def update_panel():
                           command=delete_user)
     search_btn = Button(window, text="Search\nUser", font=("Arial", 20, 'bold'), bg="white", fg='#013f95',
                         command=search_user)
-    scan_rf = Button(window, text="Scan", font=("Arial", 20, 'bold'), command=scan_butn_reg, fg="blue", bg='white')
+    scan_rf = Button(window, text="Scan", font=("Arial", 20, 'bold'),command=scan_butn_reg, fg="blue", bg='white')
 
     # rfid_numb_ent = Label(window, font=("Arial", 25, 'bold'), fg="#ad8140", bg='black')
     rfid_numb_ent = Entry(window, font=("Arial", 22, 'bold'), fg="#013f95", bg='white')
@@ -337,6 +341,7 @@ def update_panel():
     rfid_numb_ent.place(x=424, y=285, width=226, height=59)
     roll_numb_ent.place(x=424, y=380, width=424, height=59)
     detail_ent.place(x=532, y=683, width=424, height=59)
+
 
     window.mainloop()
 
@@ -364,20 +369,29 @@ def attendance_menu():
         nonlocal rfid_data
         try:
             # Check if the key is alphanumeric
+            if key.keysym == "Escape":
+                login()
+
+
             if key.char.isalnum():
                 if len(rfid_data) == 0:
                     rfid_data = []
                     print("cleared")
+                    rfid_data.clear()
+                    rfid_data.clear()
                 rfid_data.append(key.char)
                 if len(rfid_data) == 10:
+
                     rf_join_data = ''.join(rfid_data)
                     current_atte(rf_join_data)
                     print("rfid", rf_join_data)
                     rfid_data.clear()
+                    rfid_data.clear()
+                    update_attendance_table()
         except Exception as e:
             print(e)
             # Special keys (like Ctrl, Alt, etc.) will raise an AttributeError as they do not have 'char' attribute
-            # pass
+            #pass
 
     def current_atte(rfid_number):
         connection = sqlite3.connect('attendance_system.db')
@@ -398,52 +412,51 @@ def attendance_menu():
                             highlightthickness=0, bg="green", fg="white")
             status1.place(x=733.0, y=700.0, width=610.0, height=100.0)
             update_attendance_table()
-            roll_number_label.config(text="")
             connection.commit()
         else:
             roll_number_label.config(text=f"Unknown - {rfid_number}")
             status1 = Label(window, text="UNKNOWN", font=my_font, borderwidth=0,
                             highlightthickness=0, bg="red", fg="white")
             status1.place(x=733.0, y=700.0, width=610.0, height=100.0)
+        #roll_number_label.config(text="")
 
         connection.close()
+
+    status1 = Label(window, text="UNKNOWN", font=my_font, borderwidth=0,
+                    highlightthickness=0, bg="red", fg="white")
 
     def update_attendance_table():
         connection = sqlite3.connect('attendance_system.db')
         cursor = connection.cursor()
 
-        cursor.execute("SELECT * FROM att_2024_04_20")
+        cursor.execute("select * from att_2024_04_20 where date(timestamp)=date('now')")
         data = cursor.fetchall()
 
         for row in attendance_table.get_children():
             attendance_table.delete(row)
         for record in data:
-            attendance_table.insert('', 'end', text=record[0], values=record[1:4])
+            attendance_table.insert('', 'end', text=record[0], values=record[1:3])
         connection.close()
 
     ltime = Button(window, font=my_font, borderwidth=0, highlightthickness=0, bg="#013f95", fg="white")
     ltime.place(x=740.0, y=330.0, width=595.0, height=86.0)
 
-    attendance_table = ttk.Treeview(window, columns=("RF Number", "Time Stamp", "Roll Number"))
+    attendance_table = ttk.Treeview(window, columns=("Time Stamp", "Roll Number", "Roll"))
     style = ttk.Style()
     style.theme_use('default')
-    attendance_table.heading("RF Number", text="RF Number")
-    attendance_table.column("# 0", anchor=CENTER, stretch=NO, width=160)
+    attendance_table.heading("#0", text="RFID")
+    attendance_table.column("#0", anchor=CENTER, stretch=NO, width=200)
     attendance_table.heading("Time Stamp", text="Time Stamp")
-    attendance_table.column("# 1", anchor=CENTER, stretch=NO, width=140)
     attendance_table.heading("Roll Number", text="Roll Number")
-    attendance_table.column("# 2", anchor=CENTER, stretch=NO, width=130)
+    attendance_table.column("#2", anchor=CENTER, stretch=NO, width=200)
+    attendance_table.heading("Roll", text="Roll")
+    attendance_table.column("#3", anchor=CENTER, stretch=NO, width=200)
+
     attendance_table.place(x=70, y=325, width=600.0, height=552.0)
 
-    name_label = Label(window, text="Enter Name:")
-    name_entry = Entry(window)
-    search_button = Button(window, text="Search")
-    roll_number_label = Label(window, text="Next", font=my_font, borderwidth=0, highlightthickness=0, bg="#070c40",
-                              fg="white")
+    roll_number_label = Label(window, text="Next", font=my_font, borderwidth=0,highlightthickness=0, bg="#070c40", fg="white")
 
-    name_label.grid(row=0, column=0, padx=5, pady=5)
-    name_entry.grid(row=0, column=1, padx=5, pady=5)
-    search_button.grid(row=0, column=2, padx=5, pady=5)
+
     roll_number_label.place(x=733.0, y=527.0, width=610.0, height=150.0)
 
     def my_time_2():
@@ -467,14 +480,11 @@ def attendance_menu():
         height=166.0
     )
     window.bind("<Key>", on_key_press)
-    # on_key_press()
-
     my_time_2()
     update_attendance_table()
-    # listener = keyboard.Listener(on_press=on_key_press)
-    # listener.start()
+    #listener = keyboard.Listener(on_press=on_key_press)
+    #listener.start()
     window.mainloop()
-
 
 def view_panel():  #######viewwwwwww----------------------------
     # hide the existing buttons
@@ -491,6 +501,7 @@ def view_panel():  #######viewwwwwww----------------------------
 
     rfid_number_entry = Entry(window, font=("Arial", 25, 'bold'), bg="#013f95", fg='white')
 
+
     def select_from_date(event=None):
         global selected_from_date
         selected_from_date = from_date_entry_date.get_date()
@@ -502,8 +513,8 @@ def view_panel():  #######viewwwwwww----------------------------
         to_date_entry.config(text=f"{selected_to_date}")
 
     def today_data():
-        cursor.execute("select * from att_2024_04_20")
-
+        cursor.execute("select * from att_2024_04_20 where date(timestamp)=date('now') ")
+        #cursor.execute("select * from att_2024_04_20 ")
         rows = cursor.fetchall()
 
         table.delete(*table.get_children())
@@ -511,7 +522,7 @@ def view_panel():  #######viewwwwwww----------------------------
         # Insert fetched data into the Treeview widget
         for i, row in enumerate(rows, start=1):
             table.insert('', 'end', text=row[0], values=row[1:5])
-            print(rows)
+            #print(rows)
 
         # Close the cursor and connection
 
@@ -535,14 +546,14 @@ def view_panel():  #######viewwwwwww----------------------------
         connection.commit()
 
     def scan_butn_reg():
-        global rfid_number_entry, roll_number_entry, month_entry
+        global rfid_number_entry,roll_number_entry,month_entry
         rfid_number_entry.delete(0, "end")
         roll_number_entry.delete(0, "end")
         month_entry.delete(0, "end")
         rfid_number_entry.focus_set()
 
     def reset_quick_att_data():
-        cursor.execute("TRUNCATE TABLE quick_att")
+        cursor.execute("delete FROM quick_att") #att_2024_04_20
         connection.commit()
         hello_label = Label(window, text="Quick Attendance Deleted", bg="green", fg="red", font=("Arial", 17))
         hello_label.place(x=813, y=150, width=600, height=75)
@@ -559,6 +570,7 @@ def view_panel():  #######viewwwwwww----------------------------
         # Insert fetched data into the Treeview widget
         for i, row in enumerate(rows, start=1):
             table.insert('', 'end', text=row[0], values=row[1:5])
+            #print(rows)
 
         # Close the cursor and connection
 
@@ -584,13 +596,12 @@ def view_panel():  #######viewwwwwww----------------------------
         connection.commit()
 
     def view_data():
-        global canvas, rfid_number_entry, thread
+        global canvas, rfid_number_entry,thread
         # Get values from entry widgets
         global rows, headers, query
         rfid_number = rfid_number_entry.get()
         roll_number = roll_number_entry.get()
         month = month_entry.get()
-
 
 
         try:
@@ -653,23 +664,20 @@ def view_panel():  #######viewwwwwww----------------------------
         try:
             if (not roll_number) and (not rfid_number):
                 cursor.execute("""SELECT 
-    a.roll_no,
-    r.name AS Name,
-    strftime('%H hours %M minutes', 
-             SUM(julianday(a.timestamp) - julianday(MIN_timestamp)) * 24 * 60) 
-    AS Total_Working_Hours
-FROM 
-    att_2024_04_20 AS a
-JOIN 
-    registered_users AS r ON a.roll_no = r.roll_no
-JOIN 
-    (SELECT roll_no, MIN(timestamp) AS MIN_timestamp 
-     FROM att_2024_04_20 
-     GROUP BY roll_no) AS min_times
-ON a.roll_no = min_times.roll_no
-GROUP BY 
-    a.roll_no, r.name;""")
+                                a.rfid,
+                                r.name AS Name,
+                                strftime('%H hours %M minutes', 
+                                         JULIANDAY(MAX(a.timestamp)) - JULIANDAY(MIN(a.timestamp))) 
+                                         AS Total_Working_Hours
+                            FROM 
+                                att_2024_04_20 AS a
+                            JOIN 
+                                registered_users AS r ON a.rfid = r.rfid_number
+                            GROUP BY 
+                                a.rfid, r.name;""")
                 print("1")
+
+
 
 
             elif rfid_number:
@@ -698,9 +706,42 @@ GROUP BY
                                                 """
 
                 # Execute the SQL query with roll_numbers_str as parameter
-                # print("\nrfstr", rfid_numbers_str)
+                #print("\nrfstr", rfid_numbers_str)
                 cursor.execute(sql_query)
                 print("2")
+
+            if rfid_number and selected_to_date and selected_from_date:
+                rfid_numbers_st = rfid_number.split(',')
+                if len(rfid_numbers_st) == 1 and rfid_numbers_st[0].strip():
+                    rfid_numbers_str = (rfid_numbers_st[0])
+                    rfid_numbers_str = '("{}")'.format(rfid_numbers_str)
+                else:
+                    rfid_numbers_str = tuple(rfid_numbers_st)
+
+                # Ensure selected_to_date and selected_from_date are properly formatted
+                #selected_to_date_str = selected_to_date.get_date()
+                #selected_from_date_str = selected_from_date.get_date()
+                print(f"{selected_to_date}------{selected_from_date}")
+
+                sql_query = f"""SELECT 
+                                a.rfid,
+                                r.name AS Name,
+                                strftime('%H hours %M minutes', 
+                                         JULIANDAY(MAX(a.timestamp)) - JULIANDAY(MIN(a.timestamp))) 
+                                         AS Total_Working_Hours
+                            FROM 
+                                att_2024_04_20 AS a
+                            JOIN 
+                                registered_users AS r ON a.rfid = r.rfid_number
+                            WHERE 
+                                a.rfid IN ({rfid_numbers_str})
+                                AND a.timestamp BETWEEN '{selected_from_date}' AND '{selected_to_date}'
+                            GROUP BY 
+                                a.rfid, r.name;
+                                            """
+
+                cursor.execute(sql_query)
+                print("4")
 
 
             elif roll_number:
@@ -714,19 +755,19 @@ GROUP BY
                     roll_numbers_str = tuple(roll_numbers_st)
 
                 sql_query = f"""SELECT 
-                                a.roll_no,
+                                a.rfid,
                                 r.name AS Name,
                                 strftime('%H hours %M minutes', 
-                                         MAX(a.timestamp, 'unixepoch') - MIN(a.timestamp, 'unixepoch')) 
+                                         JULIANDAY(MAX(a.timestamp)) - JULIANDAY(MIN(a.timestamp))) 
                                          AS Total_Working_Hours
                             FROM 
                                 att_2024_04_20 AS a
                             JOIN 
-                                registered_users AS r ON a.roll_no = r.roll_no
+                                registered_users AS r ON a.rfid = r.rfid_number
                             WHERE 
                                 a.roll_no IN ({roll_numbers_str})
                             GROUP BY 
-                                a.roll_no, r.name;
+                                a.rfid, r.name;
                                                 """
 
                 # Execute the SQL query with roll_numbers_str as parameter
@@ -734,12 +775,13 @@ GROUP BY
                 cursor.execute(sql_query)
                 print("3")
 
+
             rows = cursor.fetchall()
 
             table.delete(*table.get_children())
             for i, row in enumerate(rows, start=1):
-                table.insert('', 'end', text=row[0], values=row[1:5])
-                print(rows)
+                table.insert('', 'end', text=row[0], values=row[1:4])
+                #1print(rows)
 
             table.heading("#0", text="Roll Number")
             table.heading("#1", text="Name")
@@ -755,7 +797,7 @@ GROUP BY
             hello_label = Label(window, text=f"Working Hours", bg="green", font=("Arial", 17))
             hello_label.place(x=813, y=150, width=600, height=75)
         except Exception as e:
-            # hello_label = Label(window, text=f"Error in Hours Search (Enter Date) {e}", bg="red", font=("Arial", 20))
+            #hello_label = Label(window, text=f"Error in Hours Search (Enter Date) {e}", bg="red", font=("Arial", 20))
             hello_label = Label(window, text=f"Er  {e}", bg="red", font=("Arial", 17))
             hello_label.place(x=813, y=150, width=600, height=75)
 
@@ -768,6 +810,7 @@ GROUP BY
         rfid_number_entry.delete(0, "end")
         roll_number_entry.delete(0, "end")
         month_entry.delete(0, "end")
+
 
         hello_label = Label(window, text="Search", bg="#070c40", fg="white", font=("Arial", 32, 'bold'))
         hello_label.place(x=813, y=150, width=600, height=75)
@@ -787,13 +830,13 @@ GROUP BY
             # Insert fetched data into the Treeview widget
             for i, row in enumerate(rows, start=1):
                 table.insert('', 'end', text=row[0], values=row[1:5])
-                # print(rows)
+                #print(rows)
 
             table.heading("#0", text="Name")
             table.heading("#1", text="Roll Number")
             table.heading("#2", text="RF Number")
             table.heading("#3", text="Category")
-            # table.heading("#4", text="Category")
+            #table.heading("#4", text="Category")
 
             headers = ["Name", "Roll Number", "RF Number", "Category"]
 
@@ -802,7 +845,7 @@ GROUP BY
             table.column("#1", anchor="center", width=180)
             table.column("#2", anchor="center", width=180)
             table.column("#3", anchor="center", width=190)
-            # table.column("#4", anchor="center", width=100)
+            #table.column("#4", anchor="center", width=100)
 
             # table.place(x=75, y=190, width=615.0, heigh=520.0)
             hello_label = Label(window, text="All Students", bg="green", font=("Arial", 17))
@@ -811,6 +854,8 @@ GROUP BY
         except:
             hello_label = Label(window, text="ERROR IN USER TABLE", bg="red", font=("Arial", 17))
             hello_label.place(x=813, y=150, width=600, height=75)
+
+
 
     def present_usr():
         table.delete(*table.get_children())
@@ -906,7 +951,7 @@ GROUP BY
     style = ttk.Style()
     style.theme_use('default')
 
-    scan_button = Button(window, text="Scan", fg="#1d2f71", font=("Arial", 20, 'bold'), command=scan_butn_reg)
+    scan_button = Button(window, text="Scan", fg="#1d2f71", font=("Arial", 20, 'bold'),command=scan_butn_reg)
 
     roll_number_entry = Entry(window, font=("Arial", 25, 'bold'), bg="white", fg='black', insertbackground='#013f95')
     from_date_entry = Label(window, text="FROM", font=("Arial", 20, 'bold'), bg="#013f95", fg='white')
@@ -923,13 +968,13 @@ GROUP BY
     from_date_entry_date.bind("<<DateEntrySelected>>", select_from_date)
     to_date_entry_date.bind("<<DateEntrySelected>>", select_to_date)
 
-    view_button = Button(window, text="View", font=("Arial", 40, 'bold'), bg="white", fg='#013f95', command=view_data)
-    time_spent_button = Button(window, text="Time Spent", font=("Arial", 20, 'bold'), bg="white", fg='#013f95',
+    view_button = Button(window, text="View", font=("Arial", 40, 'bold'),  bg="white", fg='#013f95', command=view_data)
+    time_spent_button = Button(window, text="Time Spent", font=("Arial", 20, 'bold'),  bg="white", fg='#013f95',
                                command=calculate_working_hours)
-    today_button = Button(window, text="Today", font=("Arial", 25, 'bold'), bg="white", fg='#013f95',
+    today_button = Button(window, text="Today", font=("Arial", 25, 'bold'),  bg="white", fg='#013f95',
                           command=today_data)
     # check_button = Button(window, text="Check",  font=("Arial", 25, 'bold'), fg="#1d2f71",bg='#1d2f71')
-    students_button = Button(window, text="Students", font=("Arial", 25, 'bold'), bg="white", fg='#013f95',
+    students_button = Button(window, text="Students", font=("Arial", 25, 'bold'),  bg="white", fg='#013f95',
                              command=display_registered_users)
     print_button = Button(window, text="Print", font=("Arial", 25, 'bold'), bg="white", fg='#013f95',
                           command=generate_pdf)
@@ -939,7 +984,7 @@ GROUP BY
     pr_button = Button(window, text="Pr", font=("Arial", 25, 'bold'), bg="white", fg='#013f95', command=present_usr)
     quick_att_btn = Button(window, text="Quick Att", font=("Arial", 25, 'bold'), bg="white", fg='#013f95',
                            command=quick_att_data)
-    reset_quick_att_btn = Button(window, text="Reset Quick Att", font=("Arial", 15, 'bold'), bg="white", fg='#013f95')
+    reset_quick_att_btn = Button(window, text="Reset Quick Att", font=("Arial", 15, 'bold'), bg="white", fg='#013f95',command=reset_quick_att_data)
 
     # Create labels
     rfid_number_label = Label(window, text="RFID Number", font=("Arial", 22, 'bold'), bg="#013f95", fg='white')
@@ -975,9 +1020,11 @@ GROUP BY
 
     rfid_number_entry.focus()
 
+
     today_data()
     clear_table()
     window.mainloop()
+
 
 
 def quick_attendance_menu():  #######quickattendance----------------------------
@@ -995,15 +1042,45 @@ def quick_attendance_menu():  #######quickattendance----------------------------
 
     my_font = ('times', 40, 'bold')
 
+    rfid_data = []
+
+    def on_key_press(key):
+        nonlocal rfid_data
+        try:
+            # Check if the key is alphanumeric
+            if key.keysym == "Escape":
+                login()
+
+            if key.char.isalnum():
+                if len(rfid_data) == 0:
+                    rfid_data = []
+                    print("cleared")
+                    rfid_data.clear()
+                    rfid_data.clear()
+                rfid_data.append(key.char)
+                if len(rfid_data) == 10:
+                    rf_join_data = ''.join(rfid_data)
+                    current_atte(rf_join_data)
+                    print("rfid", rf_join_data)
+                    rfid_data.clear()
+                    rfid_data.clear()
+                    update_attendance_table()
+
+        except Exception as e:
+            print(e)
+            # Special keys (like Ctrl, Alt, etc.) will raise an AttributeError as they do not have 'char' attribute
+            # pass
+
     def update_attendance_table():
 
-        cursor.execute("SELECT * FROM quick_att")
+        cursor.execute("SELECT DISTINCT name,roll_no,rfid  FROM quick_att")
         data = cursor.fetchall()
 
         for row in attendance_table.get_children():
             attendance_table.delete(row)
         for record in data:
             attendance_table.insert('', 'end', text=record[0], values=record[1:4])
+
 
     today = date.today().strftime("%Y_%m_%d")
     attendance_table = ttk.Treeview(window, columns=("Name", "Time Stamp", "Roll Number", "RF Number"))
@@ -1025,49 +1102,49 @@ def quick_attendance_menu():  #######quickattendance----------------------------
     attendance_table.column("# 4", anchor=CENTER, stretch=NO, width=130)
     attendance_table.place(x=70, y=325, width=600.0, heigh=552.0)
 
-    def current_atte(carddata):
-        global status0, status1
+    def current_atte(rfid_number):
+        connection = sqlite3.connect('attendance_system.db')
+        cursor = connection.cursor()
+        global status1, name_of_roll
 
-        card = carddata
-        cursor.execute("SELECT roll_no FROM registered_users WHERE rfid_number = %s", (card,))
+        cursor.execute("SELECT roll_no FROM registered_users WHERE rfid_number = ?", (rfid_number,))
         result = cursor.fetchone()
-        if result:
-            name_of = cursor.execute(f"SELECT name,roll_no FROM registered_users WHERE rfid_number = %s", (card,))
-            name_of = cursor.fetchone()
-            print("name of :", name_of)
-            name_of_roll = name_of[0].upper()
-            roll_of_roll = name_of[1].upper()
 
-            cursor.execute(f"INSERT INTO quick_att (rfid,roll_no,name) VALUES (%s ,%s ,%s)",
-                           (card, roll_of_roll, name_of_roll))
-            roll_number = result[0]  # Assuming roll_number is the first column in the query result
-            roll_number_label.config(text=f"{roll_number}\n{name_of_roll}")
-            status1 = Label(window, text="PRESENT", font=my_font, borderwidth=0, highlightthickness=0, bg="green",
-                            fg="white")
+        if result:
+            cursor.execute("SELECT name FROM registered_users WHERE rfid_number = ?", (rfid_number,))
+            name_of = cursor.fetchone()
+            if name_of:
+                name_of_roll = name_of[0].upper()
+            cursor.execute("INSERT INTO quick_att (rfid, roll_no,name) VALUES (?, ?,?)", (rfid_number, result[0],name_of[0]))
+            roll_number_label.config(text=f"{result[0]}\n{name_of_roll}")
+            status1 = Label(window, text="PRESENT", font=my_font, borderwidth=0,
+                            highlightthickness=0, bg="green", fg="white")
             status1.place(x=733.0, y=700.0, width=610.0, height=100.0)
             update_attendance_table()
             connection.commit()
-
         else:
-            roll_number_label.config(text=f"Unknown {card}")
+            roll_number_label.config(text=f"Unknown - {rfid_number}")
             status1 = Label(window, text="UNKNOWN", font=my_font, borderwidth=0,
                             highlightthickness=0, bg="red", fg="white")
             status1.place(x=733.0, y=700.0, width=610.0, height=100.0)
+        # roll_number_label.config(text="")
+
+
+        connection.close()
+
+    status1 = Label(window, text="UNKNOWN", font=my_font, borderwidth=0,
+                    highlightthickness=0, bg="red", fg="white")
 
     ##sample----------------------
     name_label = Label(window, text="Enter Name:")
     name_entry = Entry(window)
-    search_button = Button(window, text="Search", command=current_atte)
+    #search_button = Button(window, text="Search", command=current_atte)
     roll_number_label = Label(window, text="Next", font=my_font, borderwidth=0, highlightthickness=0, bg="#070c40",
                               fg="white")
     head_label = Label(window, text="Quick Attendance", font=my_font, borderwidth=0, highlightthickness=0, bg="#070c40",
                        fg="white")
-    # status1 = Label(window, text="----", font=my_font, borderwidth=0, highlightthickness=0, bg="#ad8140", fg="white")
-    # status1.place(x=733.0, y=700.0, width=610.0, height=100.0)
-    # Arrange widgets using grid layout
-    name_label.grid(row=0, column=0, padx=5, pady=5)
-    name_entry.grid(row=0, column=1, padx=5, pady=5)
-    search_button.grid(row=0, column=2, padx=5, pady=5)
+
+
     roll_number_label.place(x=733.0, y=527.0, width=610.0, height=150.0)
     head_label.place(x=420.0, y=230.0, width=610.0, height=70.0)
 
@@ -1077,7 +1154,8 @@ def quick_attendance_menu():  #######quickattendance----------------------------
         ltime.config(text=time_string)
         ltime.after(1000, my_time_2)
 
-    ltime = Button(window, font=my_font, borderwidth=0, highlightthickness=0, bg="#013f95", fg="white")
+
+    ltime = Button(window, font=my_font, borderwidth=0, highlightthickness=0,bg="#013f95", fg="white")
     ltime.place(x=740.0,
                 y=330.0,
                 width=595.0,
@@ -1099,18 +1177,19 @@ def quick_attendance_menu():  #######quickattendance----------------------------
         height=166.0
     )
 
-    def on_key_press(event):
+    """def on_key_press(event):
         if event.keysym == "Escape":
             login()
-
+"""
     window.bind("<Key>", on_key_press)
-
     my_time_2()
     update_attendance_table()
-
+    # listener = keyboard.Listener(on_press=on_key_press)
+    # listener.start()
+    window.mainloop()
 
 def register_menu():
-    global button_image_1, ltime, scan_rfid, name_entry, roll_no_entry
+    global button_image_1, ltime,scan_rfid,name_entry,roll_no_entry
     # button_1.place_forget()
     button_2.place_forget()
     button_3.place_forget()
@@ -1122,13 +1201,14 @@ def register_menu():
     l1.place_forget()
 
     def scan_butn_reg():
-        global scan_rfid, name_entry, roll_no_entry, hello_label
+        global scan_rfid,name_entry,roll_no_entry,hello_label
         scan_rfid.delete(0, "end")
         hello_label.destroy()
         scan_rfid.focus()
 
+
     def register_user():
-        global scan_rfid, name_entry, roll_no_entry, hello_label
+        global scan_rfid,name_entry,roll_no_entry,hello_label
         try:
             rfid = scan_rfid.get()
             name = name_entry.get()
@@ -1139,7 +1219,7 @@ def register_menu():
                     "INSERT INTO registered_users (rfid_number,name,roll_no,category) VALUES (?,?,?,?)",
                     (rfid, name, roll_no, category))
                 connection.commit()
-                name_upper = name.upper()
+                name_upper=name.upper()
                 hello_label = Label(window, text=f"REGISTERED SUCCESFULLY {name_upper}", bg="green", fg="white",
                                     font=("Arial", 20, 'bold'))
                 hello_label.place(x=240, y=800, width=986, height=65)
@@ -1158,25 +1238,26 @@ def register_menu():
             hello_label = Label(window, text=f"ERROR IN REGISTRATION {e}", bg="red", font=("Arial", 20))
             hello_label.place(x=240, y=800, width=986, height=65)
 
-    name_label = Label(window, text="Name:", font=("Arial", 40, 'bold'), fg="#013f95", bg="white")
+    name_label = Label(window, text="Name:", font=("Arial", 40, 'bold'), fg="#013f95",bg="white")
     name_entry = Entry(window, font=("Arial", 30, 'bold'), fg="black", bg='white', insertbackground='red')
-    roll_no_label = Label(window, text="Roll No:", font=("Arial", 40, 'bold'), fg="#013f95", bg="white")
+    roll_no_label = Label(window, text="Roll No:", font=("Arial", 40, 'bold'), fg="#013f95",bg="white")
     roll_no_entry = Entry(window, font=("Arial", 30, 'bold'), fg="black", bg='white', insertbackground='red')
-    rfid_no_label = Label(window, text="RFID No:", font=("Arial", 40, 'bold'), fg="#013f95", bg="white")
+    rfid_no_label = Label(window, text="RFID No:", font=("Arial", 40, 'bold'), fg="#013f95",bg="white")
     rfid_no_entry = Label(window, font=("Arial", 30, 'bold'), fg="black", state='disabled', bg='#070c40')
-    scan_button = Button(window, text="Scan", fg="#1d2f71", font=("Arial", 20, 'bold'), command=scan_butn_reg)
+    scan_button = Button(window, text="Scan", fg="#1d2f71", font=("Arial", 20, 'bold'),command=scan_butn_reg)
     submit_button = Button(window, text="Submit", fg="#1d2f71", font=("Arial", 20, 'bold'), command=register_user)
-    banner_label = Label(window, text="New Registration", font=("Arial", 40, 'bold'), fg="white", bg="#070c40")
-    category_label = Label(window, text="Category / Year", font=("Arial", 30, 'bold'), fg="#013f95", bg="white")
+    banner_label = Label(window, text="New Registration", font=("Arial", 40, 'bold'), fg="white",bg="#070c40")
+    category_label = Label(window, text="Category / Year", font=("Arial", 30, 'bold'), fg="#013f95",bg="white")
     user_var = StringVar(window)
     user_var.set("")  # Default selection
-    user_dropdown = OptionMenu(window, user_var, "1st", "2nd", "3rd", "4th", "PIC", "INTERN", "GUEST", "SHORT-TERM")
+    user_dropdown = OptionMenu(window, user_var, "1st", "2nd", "3rd", "4th", "PIC", "INTERN","FACULTY", "GUEST", "SHORT-TERM")
     user_dropdown.config(font=("Arial", 20, 'bold'), fg="white", bg="#070c40")
     user_dropdown.place(x=642, y=640, width=226.0, height=59.0)
     scan_rfid = Entry(window, font=my_font, borderwidth=0, highlightthickness=0,
                       bg="#013f95", fg="white")
     scan_rfid.place(x=642, y=340, width=328, height=66)
     scan_rfid.focus_set()
+
 
     name_label.place(x=250, y=440, width=300, height=66)
     name_entry.place(x=642, y=440, width=596, height=66)
@@ -1188,6 +1269,7 @@ def register_menu():
     category_label.place(x=250, y=640, width=300, height=66)
     submit_button.place(x=642, y=730, width=348, height=58)
 
+
     # Start the thread
     banner_label.place(x=240, y=230, width=986, height=70)
 
@@ -1197,7 +1279,6 @@ def register_menu():
 
     window.bind("<Key>", on_key_press)
     window.mainloop()
-
 
 def rfid_status():
     button_1.place_forget()
@@ -1438,7 +1519,7 @@ def rfid_status():
 
 
 def home():
-    global l1, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, thread
+    global l1, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8,thread
     canvas = Canvas(
         window,
         height=1350,
@@ -1535,14 +1616,14 @@ def home():
         width=383.0,
         height=105.0
     )
-    # update print("update clicked")
+    #update print("update clicked")
     button_image_6 = PhotoImage(
         file=relative_to_assets("button_6.png"))
     button_6 = Button(
         image=button_image_6,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: update_panel(),
+        command=lambda:update_panel(),
         relief="flat"
     )
 
@@ -1559,7 +1640,7 @@ def home():
         image=button_image_7,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: view_panel(),
+        command=lambda:view_panel(),
         relief="flat"
     )
     button_7.place(
@@ -1581,14 +1662,15 @@ def home():
     )
     button_8.place(
         x=842.0,
-        # x=1250,
+        #x=1250,
         y=363.0,
         width=383.0,
         height=105.0
     )
 
+
     l1 = Button(window, font=my_font, borderwidth=0,
-                highlightthickness=0, bg="#013f95", fg="white")
+                    highlightthickness=0, bg="#013f95", fg="white")
     l1.place(x=412.0,
              y=244.0,
              width=595.0,
@@ -1598,11 +1680,13 @@ def home():
     def on_key_press(event):
         if event.keysym == "Escape":
             home()
-
+        if event.char.lower() == "a":
+            attendance_menu()
     window.bind("<Key>", on_key_press)
     window.mainloop()
 
-
-# window.bind("<Key>", on_key_press)
+#window.bind("<Key>", on_key_press)
 window.resizable(True, True)
+
+
 home()
