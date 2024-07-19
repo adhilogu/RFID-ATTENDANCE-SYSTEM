@@ -1680,7 +1680,7 @@ def home():
     def on_key_press(event):
         if event.keysym == "Escape":
             home()
-        if event.char.lower() == "a":
+        if event.keysym == "Tab":
             attendance_menu()
     window.bind("<Key>", on_key_press)
     window.mainloop()
