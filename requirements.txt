@@ -1,8 +1,0 @@
-pathlib
-time
-datetime
-pymysql
-tkinter
-tkcalendar
-reportlab
-random
