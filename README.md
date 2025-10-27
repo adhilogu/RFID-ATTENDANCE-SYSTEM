@@ -1,5 +1,8 @@
 # RFID Attendance System
 
+<div style="float: right; margin-left: 20px;">
+  <img src="git-images/ff1.png" alt="Smart GD Platform" width="200" />
+</div>
 
 The RFID Attendance System is a desktop-based application built using Python's Tkinter GUI framework and SQLite database. It facilitates automated attendance tracking through RFID card scanning, offering a user-friendly interface for managing students, attendance records, and device status. The system is designed for schools, colleges, and offices to streamline attendance marking, user registration, and monitoring using RFID technology.
 
