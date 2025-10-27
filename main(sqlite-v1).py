@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 import os
 import time
@@ -27,7 +28,7 @@ cursor = connection.cursor()
 
 OUTPUT_PATH = Path(__file__).parent
 #ASSETS_PATH = OUTPUT_PATH / Path(r"build\assets\frame0")
-ASSETS_PATH = OUTPUT_PATH / Path(r"/Users/adhilogu2004gmail.com/Downloads/frame1")
+ASSETS_PATH = OUTPUT_PATH / Path(r"/Users/adhi/PycharmProjects/rfid-git/RFID-ATTENDANCE-SYSTEM/frame0")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -372,7 +373,6 @@ def attendance_menu():
             if key.keysym == "Escape":
                 login()
 
-
             if key.char.isalnum():
                 if len(rfid_data) == 0:
                     rfid_data = []
@@ -381,7 +381,6 @@ def attendance_menu():
                     rfid_data.clear()
                 rfid_data.append(key.char)
                 if len(rfid_data) == 10:
-
                     rf_join_data = ''.join(rfid_data)
                     current_atte(rf_join_data)
                     print("rfid", rf_join_data)
@@ -1687,6 +1686,5 @@ def home():
 
 #window.bind("<Key>", on_key_press)
 window.resizable(True, True)
-
 
 home()
