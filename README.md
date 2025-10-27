@@ -108,6 +108,9 @@ Hone page
 ![image](git-images/att.png)
 Attendance Marking Page
 
+![image](git-images/non.png)
+Non-Register user Marking Attendance
+
 ![image](git-images/view.png)
 View page 
 
@@ -123,8 +126,6 @@ Registering a User
 ![image](git-images/login1.png)
 Login Page
 
-![image](git-images/non.png)
-Non-Register user Marking Attendance
 
 
 
